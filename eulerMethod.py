@@ -1,51 +1,90 @@
-#marslander excercise 1 - euler method demonstration
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-dt = 0.001
-km = 1
 
-time = np.arange(10, step = dt)
-disp = [0]
-vel = [1]
+"""
+# mass, spring constant, initial position and velocity
+m = 1
+k = 1
+x = 0
+v = 1
 
+# simulation time, timestep and time
+t_max = 100
+dt = 0.1
+t_array = np.arange(0, t_max, dt)
 
+# initialise empty lists to record trajectories
+x_list = []
+v_list = []
 
-def velocity(v, x, dt, k):
-    return v - k*dt*x
-#paramater k actually refers to k/m ratio of the mass spring system
+# Euler integration
+for t in t_array:
 
-def displacement(v, x, dt):
-    return x + v*dt
+    # append current state to trajectories
+    x_list.append(x)
+    v_list.append(v)
 
+    # calculate new position and velocity
+    a = -k * x / m
+    x = x + dt * v
+    v = v + dt * a
 
-def calc(dt, k):
-    for n in range(len(time)-1):
-        newVel = velocity(vel[n], disp[n], dt, k)
-        newDisp = displacement(vel[n], disp[n], dt)
-        #performing v+d calculations with most recent values
-        #adding these to the end of existing lists
-        vel.append(newVel)
-        disp.append(newDisp)
-    return disp, vel
+# convert trajectory lists into arrays, so they can be sliced (useful for Assignment 2)
+x_array = np.array(x_list)
+v_array = np.array(v_list)
 
-
-disp, vel = calc(dt, 1)
-print(disp[:10], vel[:10])
-
-plt.plot(time, disp, label = 'displacement')
-plt.plot(time, vel, label = 'velocity')
-plt.xlabel('$t$')
-plt.ylabel('$x/v$')
+# plot the position-time graph
+plt.figure(1)
+plt.clf()
+plt.xlabel('time (s)')
+plt.grid()
+plt.plot(t_array, x_array, label='x (m)')
+plt.plot(t_array, v_array, label='v (m/s)')
 plt.legend()
-plt.figure()
 plt.show()
+
+"""
 
 #attempting to show displacement with time of a mass spring system
 #note the timestep must be suitably small to avoid numerical errors
 
+#creating a function simplifies editing functionality in future tasks
+def euler(km,x,v,t_max,dt):
 
+    t_array = np.arange(0, t_max, dt) #creates array of times up to t_max with step dt
+    
+    # initialise empty lists to record trajectories
+    x_list = []
+    v_list = []
+    
+    # Euler integration
+    for t in t_array:
+    
+        # append current state to trajectories
+        x_list.append(x)
+        v_list.append(v)
+    
+        # calculate new position and velocity
+        a = -km * x 
+        x = x + dt * v
+        v = v + dt * a
+    
+    # convert trajectory lists into arrays, so they can be sliced (useful for Assignment 2)
+    x_array = np.array(x_list)
+    v_array = np.array(v_list)
+    
+    # plot the position-time graph
+    plt.figure(1)
+    plt.clf()
+    plt.xlabel('time (s)')
+    plt.grid()
+    plt.plot(t_array, x_array, label='x (m)')
+    plt.plot(t_array, v_array, label='v (m/s)')
+    plt.legend()
+    plt.show()
 
+euler(1,1,0,1,100,0.1)
 
 
